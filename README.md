@@ -8,7 +8,7 @@ Welcome to **Tickters Admin**, a comprehensive dashboard for managing cinema tic
 
 ## 🚀 **Live Preview**
 
-Explore the live version: [Tickters Admin](https://ticketers-admin-11fo.vercel.app/)
+Explore the live version: [Tickters Admin](https://ticketers-admin.vercel.app/)
 
 ---
 
@@ -89,7 +89,7 @@ tickters-admin/
 
 ## 🎬 Demo
 
-Explore the live version: [Tickters Admin](https://ticketers-admin-11fo.vercel.app/)
+Explore the live version: [Tickters Admin](https://ticketers-admin.vercel.app/)
 
 ---
 
