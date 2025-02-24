@@ -23,7 +23,6 @@ function PaginationButtons({
 
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   const handlePageChange = (page: number) => {
-    console.log("Page changed to:", page);
     navigate(`/${pageName}?page=${page}`, { viewTransition: true });
   };
 

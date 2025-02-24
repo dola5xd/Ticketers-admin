@@ -228,7 +228,6 @@ export const addEvent = async (newEvent: Events): Promise<void> => {
       ...newEvent,
       _id: `event${uuidv4()}`,
     };
-    console.log("submitEvent: ", submitEvent);
     await client.create(submitEvent);
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -303,7 +302,6 @@ export const loginUser = async (
     // Fetch the user document by username
     const query = `*[_type == "user" && username == $email][0]`;
     const userDoc = await client.fetch(query, { email });
-    console.log("userDoc: ", userDoc);
     if (!userDoc) return null;
 
     const isValid = bcrypt.compareSync(password, userDoc.password);

@@ -42,8 +42,7 @@ export const useLogin = () => {
       }
       return user;
     },
-    onSuccess: (userData) => {
-      console.log("User logged in successfully:", userData);
+    onSuccess: () => {
       toast.success("User logged in successfully!");
     },
     onError: (error) => {
@@ -78,7 +77,6 @@ export const useDeleteCinema = () => {
     mutationFn: async (id) => {
       if (!id) throw new Error("Cinema ID is required for deletion.");
       await client.delete(id);
-      console.log(`Cinema with ID ${id} deleted.`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -104,7 +102,6 @@ export const useDeleteCustomer = () => {
     mutationFn: async (id) => {
       if (!id) throw new Error("Customer ID is required for deletion.");
       await client.delete(id);
-      console.log(`Customer with ID ${id} deleted.`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -134,7 +131,6 @@ export const useDeleteReview = () => {
     mutationFn: async (id) => {
       if (!id) throw new Error("Review ID is required for deletion.");
       await client.delete(id);
-      console.log(`Review with ID ${id} deleted.`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -160,7 +156,6 @@ export const useDeleteEvent = () => {
     mutationFn: async (id) => {
       if (!id) throw new Error("Event ID is required for deletion.");
       await client.delete(id);
-      console.log(`Event with ID ${id} deleted.`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
