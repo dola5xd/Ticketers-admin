@@ -72,10 +72,10 @@ export function NewCinemaForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-tuna-1000 w-1/3 flex flex-col rounded px-10 py-10 space-y-8 relative"
+        className="dark:bg-tuna-1000 bg-tuna-100 text-tuna-1000 dark:text-tuna-100 w-1/3 flex flex-col rounded px-8 py-10 space-y-8 relative"
       >
-        <div className="flex items-center justify-between">
-          <h3 className="text-2xl font-semibold">Create new customer</h3>
+        <div className="flex items-center justify-between bg-transparent">
+          <h3 className="text-2xl font-semibold">Create new cinema</h3>
           <span
             onClick={() => setOpenModal(false)}
             className="cursor-pointer [&>svg]:duration-300 hover:[&>svg]:stroke-red-500"

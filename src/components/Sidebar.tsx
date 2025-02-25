@@ -57,11 +57,11 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="none"
-      className="col-span-2 w-auto dark:text-white dark:bg-tuna-1000 bg-tuna-500 text-white"
+      className="col-span-2 w-auto dark:text-white dark:bg-tuna-1000 bg-tuna-100 text-tuna-950"
     >
       <SidebarContent>
         <SidebarGroup className="py-20">
-          <SidebarGroupLabel className="text-3xl self-center text-white">
+          <SidebarGroupLabel className="text-3xl self-center text-tuna-950 dark:text-white">
             <NavLink
               to={"/"}
               end

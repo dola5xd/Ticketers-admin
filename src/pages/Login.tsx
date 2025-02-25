@@ -18,7 +18,7 @@ const Login = () => {
       { email, password },
       {
         onSuccess: (userData) => {
-          setUser({ email: userData?.username, role: userData?.role });
+          setUser(userData);
         },
         onError: (error) => {
           throw new Error(
@@ -45,7 +45,7 @@ const Login = () => {
           <Input
             id="email"
             type="email"
-            value={email || "previewUser@gmail.com"}
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter Email"
             className="py-5 "
@@ -58,13 +58,17 @@ const Login = () => {
           <Input
             id="password"
             type="password"
-            value={password || "preview123"}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter password"
             className="py-5 "
           />
         </div>
-        <Button type="submit" className="py-5">
+        <Button
+          type="submit"
+          className="py-5 cursor-pointer"
+          disabled={isPending}
+        >
           {isPending ? "Log in..." : "Log In"}
         </Button>
       </form>

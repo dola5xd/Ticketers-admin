@@ -48,7 +48,7 @@ const PriceSettings = () => {
   }
 
   return (
-    <div className="bg-tuna-1000 p-7 rounded-xl flex flex-col space-y-8 py-10 w-1/2">
+    <div className="bg-tuna-100 dark:bg-tuna-1000 p-7 rounded-xl flex flex-col space-y-8 py-10 w-1/2 text-tuna-1000 dark:text-tuna-100">
       <Label className="text-2xl mb-6">Update Cinema Ticket Prices</Label>
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="flex flex-col space-y-4">
@@ -58,7 +58,7 @@ const PriceSettings = () => {
             id="cinemaSelect"
             value={selectedCinemaId}
             onChange={(e) => setSelectedCinemaId(e.target.value)}
-            className="p-2 w-full rounded-md bg-tuna-1000 border border-gray-300 dark:border-gray-700"
+            className="p-2 w-full rounded-md bg-tuna-100 dark:bg-tuna-1000 border border-gray-300 dark:border-gray-700"
           >
             <option value="">Choose a Cinema</option>
             {cinemas?.map((cinema) => (
@@ -81,7 +81,7 @@ const PriceSettings = () => {
             value={executivePrice}
             onChange={(e) => setExecutivePrice(Number(e.target.value))}
             disabled={!selectedCinemaId}
-            className="p-2 w-full rounded-md bg-transparent border border-gray-300 dark:border-gray-700 outline-0"
+            className="p-2 w-full rounded-md bg-transparent border border-gray-300 dark:border-gray-700 outline-0 "
           />
         </div>
         <div className="flex flex-col space-y-4">
@@ -108,7 +108,11 @@ const PriceSettings = () => {
             className="p-2 w-full rounded-md bg-transparent border border-gray-300 dark:border-gray-700 outline-0"
           />
         </div>
-        <Button type="submit" disabled={!selectedCinemaId}>
+        <Button
+          type="submit"
+          disabled={!selectedCinemaId}
+          className="cursor-pointer"
+        >
           Update Ticket Prices
         </Button>
       </form>

@@ -1,15 +1,18 @@
-import { client } from "./sanity";
+import { getSanityClient } from "./sanity";
 import { v4 as uuidv4 } from "uuid";
 import { NewCinemaTypes } from "@/components/NewCinemaForm";
 import { NewCustomer } from "@/components/NewCustomerForm";
 import { NewReviewTypes } from "@/components/NewReviewForm";
-import bcrypt from "bcryptjs";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "./firebase";
 
 /*────────────────────────────────────────────────────────────────────
   Utility Functions
 ────────────────────────────────────────────────────────────────────*/
 const uploadImageToSanity = async (image: File) => {
   try {
+    const client = getSanityClient(); // Get the dynamic client here
     const uploadedImage = await client.assets.upload("image", image, {
       filename: image.name,
     });
@@ -37,6 +40,7 @@ export interface Customer {
 
 export const getCustomers = async (page?: number): Promise<Customer[]> => {
   try {
+    const client = getSanityClient();
     let query;
     if (page) {
       const pageSize = 10;
@@ -58,6 +62,7 @@ export const getCustomers = async (page?: number): Promise<Customer[]> => {
 
 export const fetchTotalCustomersCount = async (): Promise<number> => {
   try {
+    const client = getSanityClient();
     const query = `count(*[_type == "customer"])`;
     const totalCount = await client.fetch<number>(query);
     return totalCount;
@@ -77,6 +82,7 @@ export const addNewCustomer = async (customer: NewCustomer): Promise<void> => {
       _id: `customer_${uuidv4()}`,
       image: imageUrl,
     };
+    const client = getSanityClient();
     await client.createOrReplace(customerWithUniqueId);
   } catch (error) {
     if (error instanceof Error)
@@ -87,6 +93,7 @@ export const addNewCustomer = async (customer: NewCustomer): Promise<void> => {
 
 export const getCustomerImageById = async (id: string) => {
   try {
+    const client = getSanityClient();
     const query = `*[_type == "customer" && _id == $id]{image}`;
     const response = await client.fetch(query, { id });
     return response.at(0).image;
@@ -126,17 +133,19 @@ export const addNewCinema = async (cinema: NewCinemaTypes): Promise<Cinema> => {
       premierPrice: 0,
       classicPrice: 0,
     };
+    const client = getSanityClient();
     const response = await client.createOrReplace(cinemaWithUniqueId);
     return response;
   } catch (error) {
     if (error instanceof Error)
-      throw new Error("Error adding fake cinema: " + error.message);
-    else throw new Error("Error adding fake cinema");
+      throw new Error("Error adding cinema: " + error.message);
+    else throw new Error("Error adding cinema");
   }
 };
 
 export const getCinemas = async () => {
   try {
+    const client = getSanityClient();
     const query = `*[_type == "cinema"] | order(dateJoin desc)`;
     const response = await client.fetch(query);
     return response;
@@ -162,6 +171,7 @@ export const EditCinema = async (cinema: Cinema) => {
       ...cinema,
       image: imageUrl,
     };
+    const client = getSanityClient();
     await client.createOrReplace(updatedCinema);
   } catch (error) {
     throw new Error(
@@ -187,10 +197,9 @@ export interface Events {
   description: string;
 }
 
-export const getEvents = async (
-  page?: number | undefined
-): Promise<Events[]> => {
+export const getEvents = async (page?: number): Promise<Events[]> => {
   try {
+    const client = getSanityClient();
     let query;
     if (page) {
       const eventsPerPage = 10;
@@ -212,6 +221,7 @@ export const getEvents = async (
 
 export const fetchTotalEventsCount = async (): Promise<number> => {
   try {
+    const client = getSanityClient();
     const query = `count(*[_type == "event"])`;
     const totalCount = await client.fetch<number>(query);
     return totalCount;
@@ -226,8 +236,9 @@ export const addEvent = async (newEvent: Events): Promise<void> => {
   try {
     const submitEvent = {
       ...newEvent,
-      _id: `event${uuidv4()}`,
+      _id: `event_${uuidv4()}`,
     };
+    const client = getSanityClient();
     await client.create(submitEvent);
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -242,6 +253,7 @@ export const EditEvent = async (updatedEvent: Events): Promise<void> => {
     if (!updatedEvent._id) {
       throw new Error("Event must have an _id to update.");
     }
+    const client = getSanityClient();
     await client.createOrReplace(updatedEvent);
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -257,6 +269,7 @@ export const EditEvent = async (updatedEvent: Events): Promise<void> => {
 ────────────────────────────────────────────────────────────────────*/
 export const getReviews = async (): Promise<NewReviewTypes[]> => {
   try {
+    const client = getSanityClient();
     const query = `*[_type == "review"] | order(_createdAt desc)`;
     const response = await client.fetch(query);
     return response;
@@ -273,8 +286,9 @@ export const addNewReview = async (review: NewReviewTypes): Promise<void> => {
     const newReview = {
       ...review,
       _type: "review",
-      _id: `review${uuidv4()}`,
+      _id: `review_${uuidv4()}`,
     };
+    const client = getSanityClient();
     await client.createOrReplace(newReview);
   } catch (error) {
     if (error instanceof Error)
@@ -284,14 +298,13 @@ export const addNewReview = async (review: NewReviewTypes): Promise<void> => {
 };
 
 /*────────────────────────────────────────────────────────────────────
-  user Functions
+  User Functions
 ────────────────────────────────────────────────────────────────────*/
-
 export interface User {
-  _id: string;
-  username: string;
-  password: string;
+  uid: string;
+  email: string;
   role: "admin" | "preview";
+  token?: string; // Only present for admin
 }
 
 export const loginUser = async (
@@ -299,19 +312,42 @@ export const loginUser = async (
   password: string
 ): Promise<User | null> => {
   try {
-    // Fetch the user document by username
-    const query = `*[_type == "user" && username == $email][0]`;
-    const userDoc = await client.fetch(query, { email });
-    if (!userDoc) return null;
+    const auth = getAuth();
 
-    const isValid = bcrypt.compareSync(password, userDoc.password);
-    if (!isValid) return null;
+    // 1. Authenticate with Firebase Auth
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-    return userDoc;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw new Error("Error logging in user: " + error.message);
+    // 2. Get user document from Firestore
+    const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
+
+    if (!userDoc.exists()) {
+      throw new Error("User document not found");
     }
-    throw new Error("Error logging in user");
+
+    const userData = userDoc.data();
+
+    // 3. Verify role structure
+    if (!userData.role || !["admin", "preview"].includes(userData.role)) {
+      throw new Error("Invalid user role");
+    }
+
+    // 4. Verify admin token if needed
+    if (userData.role === "admin" && !userData.Token) {
+      throw new Error("Admin account missing token");
+    }
+
+    return {
+      uid: userCredential.user.uid,
+      email: userCredential.user.email || "",
+      role: userData.role,
+      token: userData.Token,
+    };
+  } catch (error) {
+    console.error("Login error:", error);
+    return null;
   }
 };

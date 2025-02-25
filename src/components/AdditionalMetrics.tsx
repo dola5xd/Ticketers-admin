@@ -41,14 +41,14 @@ export function AdditionalMetrics() {
   }, []);
 
   return (
-    <Card className="bg-white dark:bg-gray-800 h-full">
+    <Card className="bg-tuna-50 dark:bg-gray-800  h-full">
       <CardHeader>
         <CardTitle className="text-gray-900 dark:text-white">
           Key Metrics
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-3 ">
-        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700">
+        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-tuna-50 dark:bg-gray-700">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
             Total Customers
           </h3>
@@ -56,7 +56,7 @@ export function AdditionalMetrics() {
             {metrics.customers}
           </p>
         </div>
-        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700">
+        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-tuna-50 dark:bg-gray-700">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
             Total Events
           </h3>
@@ -64,7 +64,7 @@ export function AdditionalMetrics() {
             {metrics.events}
           </p>
         </div>
-        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700">
+        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-tuna-50 dark:bg-gray-700">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
             Total Reviews
           </h3>
@@ -72,7 +72,7 @@ export function AdditionalMetrics() {
             {metrics.reviews}
           </p>
         </div>
-        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700">
+        <div className="p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-tuna-50 dark:bg-gray-700">
           <h3 className="text-sm font-medium text-gray-600 dark:text-gray-300">
             Total Revenue
           </h3>

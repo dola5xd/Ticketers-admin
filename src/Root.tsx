@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./context/AuthContext";
 import AppRoutes from "./AppRoutes";
 import { Toaster } from "react-hot-toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const queryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ const Root = () => (
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} />
     </AuthProvider>
 
     <Toaster

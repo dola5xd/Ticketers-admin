@@ -27,7 +27,7 @@ export function LatestReviewsCard() {
   }, []);
 
   return (
-    <Card className="bg-white dark:bg-gray-800 h-[60vh]">
+    <Card className="bg-tuna-50 dark:bg-gray-800 h-[60vh]">
       <CardHeader>
         <CardTitle className="text-gray-900 dark:text-white">
           Latest 5 Reviews

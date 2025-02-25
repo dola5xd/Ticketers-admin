@@ -21,12 +21,14 @@ import {
   loginUser,
   User,
 } from "@/lib/api";
-import { client } from "@/lib/sanity";
 import { queryClient } from "@/Root";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
 
-// ─── MUTATION HOOKS ────────────────────────────────────────────────
+//
+// ─── MUTATION HOOKS ──────────────────────────────────────────────
+//
 
 export interface LoginCredentials {
   email: string;
@@ -57,7 +59,10 @@ export const useLogin = () => {
 
 export const useAddCinemas = () => {
   return useMutation<Cinema, Error, NewCinemaTypes, unknown>({
-    mutationFn: addNewCinema,
+    mutationFn: async (cinema: NewCinemaTypes) => {
+      // Pass the dynamic client to the API function.
+      return await addNewCinema(cinema);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["cinemas"],
@@ -73,6 +78,7 @@ export const useAddCinemas = () => {
 };
 
 export const useDeleteCinema = () => {
+  const { client } = useAuth();
   return useMutation<void, Error, string>({
     mutationFn: async (id) => {
       if (!id) throw new Error("Cinema ID is required for deletion.");
@@ -98,6 +104,8 @@ export const useDeleteCinema = () => {
 };
 
 export const useDeleteCustomer = () => {
+  const { client } = useAuth();
+
   return useMutation<void, Error, string>({
     mutationFn: async (id) => {
       if (!id) throw new Error("Customer ID is required for deletion.");
@@ -127,6 +135,8 @@ export const useDeleteCustomer = () => {
 };
 
 export const useDeleteReview = () => {
+  const { client } = useAuth();
+
   return useMutation<void, Error, string>({
     mutationFn: async (id) => {
       if (!id) throw new Error("Review ID is required for deletion.");
@@ -152,6 +162,8 @@ export const useDeleteReview = () => {
 };
 
 export const useDeleteEvent = () => {
+  const { client } = useAuth();
+
   return useMutation<void, Error, string>({
     mutationFn: async (id) => {
       if (!id) throw new Error("Event ID is required for deletion.");
@@ -178,7 +190,10 @@ export const useDeleteEvent = () => {
 
 export const useEditEvent = () => {
   return useMutation<void, Error, Events>({
-    mutationFn: EditEvent,
+    mutationFn: async (updatedEvent: Events) => {
+      // Pass the dynamic client to the API function.
+      return await EditEvent(updatedEvent);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["events"],
@@ -198,7 +213,9 @@ export const useEditEvent = () => {
 
 export const useEditCinema = () => {
   return useMutation<void, Error, Cinema, unknown>({
-    mutationFn: (cinema: Cinema) => EditCinema(cinema),
+    mutationFn: async (cinema: Cinema) => {
+      return await EditCinema(cinema);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["cinemas"],
@@ -218,7 +235,9 @@ export const useEditCinema = () => {
 
 export const useAddCustomer = (totalPages: number) => {
   return useMutation<void, Error, NewCustomer>({
-    mutationFn: (newCustomer) => addNewCustomer(newCustomer),
+    mutationFn: async (newCustomer) => {
+      return await addNewCustomer(newCustomer);
+    },
     onSuccess: () => {
       for (let page = 1; page <= totalPages; page++) {
         queryClient.invalidateQueries({
@@ -244,7 +263,9 @@ export const useAddCustomer = (totalPages: number) => {
 
 export const useAddEvent = (totalPages: number) => {
   return useMutation<void, Error, Events>({
-    mutationFn: (newEvent) => addEvent(newEvent),
+    mutationFn: async (newEvent) => {
+      return await addEvent(newEvent);
+    },
     onSuccess: () => {
       for (let page = 1; page <= totalPages; page++) {
         queryClient.invalidateQueries({
@@ -268,7 +289,9 @@ export const useAddEvent = (totalPages: number) => {
   });
 };
 
+//
 // ─── QUERY HOOKS ──────────────────────────────────────────────────
+//
 
 export const useFetchCustomers = (page?: number) => {
   return useQuery<Customer[], Error>({
@@ -305,7 +328,7 @@ export const useFetchEvents = (page?: number) => {
 
 export const useGetCustomerLength = () => {
   return useQuery({
-    queryFn: fetchTotalCustomersCount,
+    queryFn: () => fetchTotalCustomersCount(),
     queryKey: ["customersCount"],
     staleTime: 1000 * 60 * 10,
   });
@@ -313,7 +336,7 @@ export const useGetCustomerLength = () => {
 
 export const useGetEventsLength = () => {
   return useQuery({
-    queryFn: fetchTotalEventsCount,
+    queryFn: () => fetchTotalEventsCount(),
     queryKey: ["eventsCount"],
     staleTime: 1000 * 60 * 10,
   });
@@ -333,7 +356,9 @@ export const useGetReviews = () => {
 
 export const useAddReview = () => {
   return useMutation<void, Error, NewReviewTypes>({
-    mutationFn: (review) => addNewReview(review),
+    mutationFn: async (review) => {
+      return await addNewReview(review);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reviews"],

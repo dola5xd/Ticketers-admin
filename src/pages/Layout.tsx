@@ -24,7 +24,7 @@ function Layout() {
         )}
         <main className="min-h-screen w-screen grid grid-cols-11">
           <AppSidebar />
-          <div className="dark:bg-tuna-1000/50 col-span-9 py-5 px-10 flex flex-col items-start gap-y-1 dark:text-white bg-gray-400 text-black">
+          <div className="dark:bg-tuna-1000/50 col-span-9 py-5 px-10 flex flex-col items-start gap-y-1 dark:text-white bg-tuna-50 text-black">
             <div className="self-end flex items-center gap-3">
               <div className="flex items-center space-x-2">
                 <Label htmlFor="dark-mode">

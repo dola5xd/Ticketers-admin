@@ -20,7 +20,7 @@ const AppRoutes = () => (
   <ErrorBoundary FallbackComponent={ErrorFallback}>
     <Suspense
       fallback={
-        <div className="flex flex-col justify-center items-center bg-tuna-1000 h-screen w-full">
+        <div className="flex flex-col justify-center items-center dark:bg-tuna-1000 h-screen w-full bg-tuna-50">
           <Spinner />
         </div>
       }

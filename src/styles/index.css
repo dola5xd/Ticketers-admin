@@ -21,10 +21,20 @@
   --sidebar-accent-foreground: hsl(240 5.9% 10%);
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --chart-fill: #876fd4;
+  --chart-fill-hover: #5e40be;
+  --chart-tooltip-bg: #1f2937;
+  --chart-tooltip-text: #ffffff;
   overflow-y: hidden;
   transition: color 0.5s;
 }
-
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -61,6 +71,11 @@
   --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
+  --chart-fill: #a9a9ff;
+  --chart-fill-hover: #6b46c1;
+  --chart-axis: #d1d5db;
+  --chart-tooltip-bg: #374151;
+  --chart-tooltip-text: #ffffff;
 }
 ul a.active {
   color: #615fff;

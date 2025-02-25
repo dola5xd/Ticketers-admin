@@ -61,10 +61,11 @@ export function EditEventForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-tuna-1000 w-1/3 flex flex-col rounded px-10 py-10 space-y-8 relative"
+        className="dark:bg-tuna-1000 bg-tuna-100 text-tuna-1000 dark:text-tuna-100 w-1/3 flex flex-col rounded px-8 py-10 space-y-8 relative"
       >
         <span
-          className="absolute top-0 bg-tuna-900 rounded right-0 cursor-pointer hover:bg-red-700 duration-500"
+          className="absolute top-0 bg-transparent rounded right-0 cursor-pointer hover:bg-red-700 duration-500 [&>svg]:stroke-white  
+ [&>svg]:duration-500 hover:[&>svg]:stroke-white"
           onClick={() => setOpenModal(false)}
         >
           <X size={35} />

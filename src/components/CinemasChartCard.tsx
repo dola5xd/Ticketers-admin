@@ -51,7 +51,7 @@ export function CinemasChartCard() {
   }, []);
 
   return (
-    <Card className="bg-white dark:bg-gray-800 h-[75vh]">
+    <Card className="h-[75vh] bg-[var(--color-tuna-50)] dark:bg-[var(--color-tuna-1000)]">
       <CardHeader>
         <CardTitle className="text-sm">Cinemas with Most Events</CardTitle>
         <CardDescription className="text-gray-400">
@@ -69,32 +69,35 @@ export function CinemasChartCard() {
             <CartesianGrid
               strokeDasharray="3 3"
               horizontal={false}
-              stroke="#666"
+              stroke="var(--chart-axis)"
             />
             <XAxis
               type="number"
-              tick={{ fill: "#E5E7EB", fontSize: 14 }}
+              tick={{ fill: "var(--chart-axis)", fontSize: 14 }}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
               dataKey="name"
               type="category"
-              tick={{ fill: "#E5E7EB", fontSize: 12 }}
+              tick={{ fill: "var(--chart-axis)", fontSize: 12 }}
               axisLine={false}
               tickLine={false}
               width={140}
             />
             <Tooltip
               cursor={{ fill: "rgba(255, 255, 255, 0)" }}
-              contentStyle={{ backgroundColor: "#1F2937", border: "none" }}
-              labelStyle={{ color: "#fff" }}
-              itemStyle={{ color: "#fff" }}
+              contentStyle={{
+                backgroundColor: "var(--chart-tooltip-bg)",
+                border: "none",
+              }}
+              labelStyle={{ color: "var(--chart-tooltip-text)" }}
+              itemStyle={{ color: "var(--chart-tooltip-text)" }}
               formatter={(value) => [value, "Events"]}
             />
             <Bar
               dataKey="count"
-              fill="#c2c2c2"
+              fill="var(--chart-fill)"
               barSize={30}
               radius={[8, 8, 8, 8]}
               onMouseEnter={(_, index) => setHoveredIndex(index)}
@@ -103,7 +106,11 @@ export function CinemasChartCard() {
               {data.map((_, index) => (
                 <Cell
                   key={`bar-${index}`}
-                  fill={hoveredIndex === index ? "#5E40BE" : "#876FD4"}
+                  fill={
+                    hoveredIndex === index
+                      ? "var(--chart-fill-hover)"
+                      : "var(--chart-fill)"
+                  }
                 />
               ))}
             </Bar>

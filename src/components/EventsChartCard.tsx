@@ -70,7 +70,7 @@ export function EventsLineChartCard() {
   }, []);
 
   return (
-    <Card className="bg-white dark:bg-gray-800 h-full">
+    <Card className="bg-tuna-50 dark:bg-gray-800 h-full">
       <CardHeader>
         <CardTitle>Events Over the Year</CardTitle>
         <CardDescription>{new Date().getFullYear()}</CardDescription>
@@ -81,28 +81,31 @@ export function EventsLineChartCard() {
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
-              stroke="#666"
+              stroke="var(--chart-axis)"
             />
             <XAxis
               dataKey="month"
-              tick={{ fill: "#E5E7EB", fontSize: 12 }}
+              tick={{ fill: "var(--chart-axis)", fontSize: 12 }}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
-              tick={{ fill: "#E5E7EB", fontSize: 12 }}
+              tick={{ fill: "var(--chart-axis)", fontSize: 12 }}
               axisLine={false}
               tickLine={false}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: "#1F2937", border: "none" }}
-              labelStyle={{ color: "#fff" }}
-              itemStyle={{ color: "#fff" }}
+              contentStyle={{
+                backgroundColor: "var(--chart-tooltip-bg)",
+                border: "none",
+              }}
+              labelStyle={{ color: "var(--chart-tooltip-text)" }}
+              itemStyle={{ color: "var(--chart-tooltip-text)" }}
             />
             <Line
               type="monotone"
               dataKey="events"
-              stroke="#fff"
+              stroke="var(--chart-fill)"
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 6 }}
